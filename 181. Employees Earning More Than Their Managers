@@ -1,0 +1,4 @@
+select Emp.name as Employee
+from Employee Manager  join Employee Emp
+on Manager.id = Emp.managerId
+where Emp.salary > Manager.salary ;
