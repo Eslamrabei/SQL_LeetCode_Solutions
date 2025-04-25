@@ -1,0 +1,29 @@
+1- WITH RankingEmp AS (
+    SELECT salary,
+           ROW_NUMBER() OVER (ORDER BY salary DESC) AS Rnum
+    FROM Employee
+    WHERE salary IS NOT NULL
+    GROUP BY salary 
+)
+SELECT 
+    MAX(CASE WHEN Rnum = 2 THEN salary ELSE NULL END) AS SecondHighestSalary
+FROM RankingEmp;
+
+
+---------------
+
+2- SELECT 
+    MAX(salary) AS SecondHighestSalary
+FROM 
+    Employee
+WHERE 
+    salary < (SELECT MAX(salary) FROM Employee);
+
+--------------
+3- SELECT 
+    ISNULL((
+        SELECT DISTINCT salary
+        FROM Employee
+        ORDER BY salary DESC
+        OFFSET 1 ROW FETCH NEXT 1 ROW ONLY
+    ), NULL) AS SecondHighestSalary;
