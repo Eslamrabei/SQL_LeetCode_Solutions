@@ -1,0 +1,13 @@
+With HighSalary AS 
+(
+    Select  D.name as 'Department' ,E.name as 'Employee' ,Max(E.salary) as 'Salary' ,
+    Rank() Over (Partition by D.name Order by E.salary desc) Rn
+    From Department D Join Employee E
+    On D.id = E.departmentId
+    Group By D.name , E.name ,E.salary
+    
+)
+Select Department ,Employee,Salary 
+From HighSalary 
+Where Rn = 1
+Order By Employee ;
