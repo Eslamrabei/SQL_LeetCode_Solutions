@@ -1,0 +1,12 @@
+
+    Select request_at as Day ,
+        Round(CAST(Sum(Case    
+                        When T.status IN('cancelled_by_driver','cancelled_by_client')  Then 1 Else 0 
+                  End
+                ) AS Float ) / Count(*)  , 2 ) AS 'Cancellation Rate'
+    From Trips T  Join Users U1
+    On T.client_id = U1.users_id And U1.banned = 'No'
+    Join Users U2 On T.driver_id  = U2.users_id And U2.banned = 'No'
+    Where request_at between '2013-10-01' And '2013-10-03'
+    Group By request_at
+    Order By  request_at ;
